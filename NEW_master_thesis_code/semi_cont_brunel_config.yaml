@@ -1,0 +1,47 @@
+# beNNch - Unified execution, collection, analysis and
+# comparison of neural network simulation benchmarks.
+# Copyright (C) 2021 Forschungszentrum Juelich GmbH, INM-6
+
+# This program is free software: you can redistribute it and/or modify it under
+# the terms of the GNU General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later
+# version.
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE. See the GNU General Public License for more details.
+# You should have received a copy of the GNU General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+parameterset:
+    - name: file_paths
+      parameter:
+       - {name: base_path, type: string, _: /p/project/icei-hbp-2020-0005/groenbekk1/beNNch}  # path where main repository is stored
+       - {name: model_path, type: string, _: /p/home/jusers/groenbekk1/jusuf/project/models/semi_cont_brunel}  # path where the model is stored
+       - {name: data_path, type: string, _: /p/home/jusers/groenbekk1/jusuf/project/data}  # path where the simulation files are copied and the simulation output is stored
+    - name: model_parameters
+      parameter:
+       - {name: model_name, type: string, _: "semi continuous brunel"}  # for identifying the model, can be any unique string
+       - {name: network_state, type: string, _: ""}  # empty for hpc benchmark
+       - {name: model_time_sim, type: float, _: "10000."}  # biological time to be simulated in ms
+       - {name: model_time_presim, type: float, _: "0."}  # presimulation time for avoiding initial transients in ms
+       - {name: scale_N, type: float, _: "1."}  # scaling the number of neurons, 1. -> original model
+       - {name: rng_seed, type: int, _: "1,2,3,4,5,6,7,8,9,10"}  # rng seed for NEST, accepts a list in the format a,b,c,... for generating multiple runs
+       - {name: scaling_type, _: "weak"}  # can be either weak or strong
+       - {name: resolution, _: "1/2,1/4,1/8,1/16,1/32,1/64,1/128,1/256"}  # resolution of simulations
+
+    - name: machine_parameters
+      parameter:
+       - {name: num_nodes, type: int, _: "1"}  # number of nodes, accepts a list in the format a,b,c,... for generating multiple runs
+       - {name: tasks_per_node, type: int, _: "1"}  # number of (MPI) tasks per node, accepts a list in the format a,b,c,... for generating multiple runs
+       - {name: threads_per_task, type: int, _: "1"}  # number of threads per task, accepts a list in the format a,b,c,... for generating multiple runs
+       - {name: walltime, type: string, _: "00:30:00"}  # wall time for the job in format hh:mm:ss
+       - {name: affinity, type: string, separator: ";", _: "--cpu-bind=verbose,threads --distribution=block:cyclic:fcyclic --hint=nomultithread"}  # processor affinity/pinning
+    - name: software_parameters
+      parameter:
+       - {name: simulator, _: "nest-simulator"}  # simulator to be installed (plan file must be provided)
+       - {name: version, _: "3.1"}  # simulator version
+       - {name: variant, _: "default"}  # version variant
+       - {name: suffix, _: ""}  # custom suffix for identification of simulator installation
+       - {name: buildermod, _: ""} # absolute path to Builder modules folder
